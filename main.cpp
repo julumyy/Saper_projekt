@@ -6,9 +6,11 @@ using namespace std;
 int main() {
     cout << "Testowanie planszy Sapera:\n";
     
-    // Tworzymy planszę 5x5
-    Plansza p(5, 5);
+    //tworzenie planszy
+    Plansza p(5, 5, 3);
+
     p.wyswietl();
+    p.wyswietl_debug();
 
     return 0;
 }
