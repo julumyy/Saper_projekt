@@ -12,14 +12,15 @@ public:
     Pole();
 
     bool get_czy_mina() const;
-    bool get_czy_odkrycie() const;
+    bool get_czy_odkryte() const;
     bool get_czy_flaga() const;
     int get_liczba_sasiadow() const;
 
 
     void set_czy_mina(bool mina);
-    void set_odkrycie(bool odkrycie);
+    void set_odkryte(bool odkrycie);
     void set_flaga(bool flaga);
     void set_liczba_sasiadow(int licznik);
 };
 
+#endif

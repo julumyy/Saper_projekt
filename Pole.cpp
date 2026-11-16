@@ -1,4 +1,4 @@
-#include "Pole_h"
+#include "Pole.h"
 
 Pole::Pole() {
     czy_mina = false;
@@ -13,8 +13,8 @@ bool Pole::get_czy_flaga() const { return czy_flaga; }
 int Pole::get_liczba_sasiadow() const { return liczba_sasiadow; }
 
 
-void Pole::set_czy_Mina(bool mina) { czy_mina = mina; }
-void Pole::set_odkrycie(bool odkrycie) { czy_odkrycie = odkrycie; }
+void Pole::set_czy_mina(bool mina) { czy_mina = mina; }
+void Pole::set_odkryte(bool odkrycie) { czy_odkryte = odkrycie; }
 void Pole::set_flaga(bool flaga) { czy_flaga = flaga; }
-void Pole::set_liczba_sasiadow(int licznik) { licznik_sasiadow = licznik; }
+void Pole::set_liczba_sasiadow(int licznik) { liczba_sasiadow = licznik; }
 
