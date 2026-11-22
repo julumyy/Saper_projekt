@@ -11,10 +11,18 @@ int main() {
     bool gra_trwa = true;
     int akcja, x, y;
 
+    // Pole pole1;
+    // Pole pole2;
+
+    // if(pole1 == pole2) {
+    //     cout << "test operatora ==; pola sa identyczne!\n";
+    // }
+
     cout << "=== SAPER ===\n";
 
     while(gra_trwa) {
-        p.wyswietl();
+        cout << p;
+        //p.wyswietl();
 
         if(p.czy_wygrana()) {
             cout << "\nGRATULACJE, wygrales!\n";
@@ -38,17 +46,23 @@ int main() {
         cout << "\nPodaj wspolrzedne (x y): ";
         cin >> x >> y;
     
-        
-        if(akcja == 1) {
-            gra_trwa = p.odkryj_pole(x, y);
-            if(!gra_trwa) {
-            cout <<"\n Trafiles na mine. Koniec gry.\n";
-            p.wyswietl_debug();
+        try {
+            if(akcja == 1) {
+                gra_trwa = p.odkryj_pole(x, y);
+                if(!gra_trwa) {
+                    cout <<"\n Trafiles na mine. Koniec gry.\n";
+                    p.wyswietl_debug();
+                }
+            } else if (akcja == 2) {
+                p.oznacz_pole(x, y);
             }
-        } else if (akcja == 2) {
-            p.oznacz_pole(x, y);
-        } else {
-            cout << "Niepoprawna akcja";
+            
+            //else {
+            //    cout << "Niepoprawna akcja";
+            //}
+        }
+        catch (const out_of_range& e) {
+            cout << "Blad wyjatku: " << e.what() << "\n";
         }
         
     }

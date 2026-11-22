@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "Pole.h"
+#include <iostream>
 
 using namespace std;
 
@@ -14,7 +15,7 @@ private:
 
 public:
     Plansza(int szer, int wys, int miny);
-    void wyswietl() const;
+    //void wyswietl() const;
     void losuj_miny();
     void oblicz_sasiadow();
     void wyswietl_debug() const;
@@ -22,6 +23,11 @@ public:
     void oznacz_pole(int x, int y);
     bool czy_wygrana() const;
 
+    int get_szerokosc() const { return szerokosc; }
+    int get_wysokosc() const { return wysokosc; }
+
+
+    friend ostream& operator<<(ostream& os, const Plansza& plansza);
 };
 
 #endif

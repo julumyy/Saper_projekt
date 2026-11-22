@@ -59,32 +59,53 @@ void Plansza::oblicz_sasiadow() {
 }
 
 
-void Plansza::wyswietl() const { //"." dla zakrytych, 'F' dla oznaczonych flag
-    cout << "\n    ";
-    for (int x = 0; x < szerokosc; ++x) {
-        cout << x << " ";
+ostream& operator<<(ostream& os, const Plansza& plansza) { //"." dla zakrytych, 'F' dla oznaczonych flag
+    os << "\n    ";
+    for (int x = 0; x < plansza.get_szerokosc(); ++x) {
+        os << x << " ";
     }
 
-    cout << "\n   -----------\n";
+    os << "\n    ";
+    for(int x = 0; x < plansza.get_szerokosc(); ++x) {
+        os << "--";
+    }
+    os << "-\n";
+    
+    //cout << "\n   -----------\n";
 
-    for (int y = 0; y < wysokosc; ++y) {
-        cout << y << " | ";
+    for (int y = 0; y < plansza.get_wysokosc(); ++y) {
+        os << y << " | ";
         
-        for (int x = 0; x < szerokosc; ++x) {
+        for (int x = 0; x < plansza.get_szerokosc(); ++x) {
             //
-            if (siatka[y][x].get_czy_odkryte()) {
-                cout << siatka[y][x].get_liczba_sasiadow() << " ";
-            } else if (siatka[y][x].get_czy_flaga()) {
-                cout << "F ";
-            } else {
-                cout << ". ";
-            }
-            
+            if (!plansza.siatka[y][x].get_czy_odkryte()) {
+                if (plansza.siatka[y][x].get_czy_odkryte()) {
+                    os << "F ";
+                } else {
+                    os << ". ";
+                }
 
+            } else if (plansza.siatka[y][x].get_czy_mina()) {
+                os << "* ";
+            } else {
+                int sasiedzi = plansza.siatka[y][x].get_liczba_sasiadow();
+                if (sasiedzi == 0) {
+                    os << "0 ";
+                } else {
+                    os << sasiedzi << " ";
+                }
+            }
         }
-        cout << "|\n";
+        os << "|\n";
     }
-    cout << "   -----------\n";
+    
+    os << "   ";
+    for(int x = 0; x < plansza.get_szerokosc(); ++x) {
+        os << "--";
+    }
+    os << "-\n";
+    return os;
+    //os << "   -----------\n";
 }
 
 // debugowanie - pokazuje miny '*' i cyfry od razu
@@ -127,13 +148,14 @@ void Plansza::oznacz_pole(int x, int y) {
 
 bool Plansza::odkryj_pole(int x, int y) {
 
+    Pole domyslne;
+    if(siatka[y][x] == domyslne) {}
+
     if (x < 0 || x >= szerokosc || y < 0 || y >= wysokosc) {
-        //cout << "Niepoprawne wspolrzedne\n";
-        return true;
+        throw out_of_range("Niepoprawne wspolrzedne");
     }
 
     if (siatka[y][x].get_czy_odkryte() || siatka[y][x].get_czy_flaga()) {
-        //cout << "To pole jest już odkryte\n";
         return true;
     }
 
@@ -149,8 +171,13 @@ bool Plansza::odkryj_pole(int x, int y) {
     if(siatka[y][x].get_liczba_sasiadow() == 0) {
         for(int dy = -1; dy <= 1; ++dy) {
             for(int dx = -1; dx <= 1; ++dx) {
-                if(dy != 0 || dx != dy) {
-                    odkryj_pole(x + dx, y + dy);
+                if(dy != 0 || dx != 0) {
+                    int nx = x + dx;
+                    int ny = y + dy;
+                    if(nx >= 0 && nx < szerokosc && ny >= 0 && ny < wysokosc) {
+                        odkryj_pole(nx, ny);
+                    }
+                    
                 }
             }
         }
@@ -158,6 +185,7 @@ bool Plansza::odkryj_pole(int x, int y) {
     
     return true;
 }
+
 bool Plansza::czy_wygrana() const {
     for(int y = 0; y < wysokosc; ++y) {
         for(int x = 0; x < szerokosc; ++x) {

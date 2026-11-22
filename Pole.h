@@ -15,13 +15,13 @@ public:
     bool get_czy_odkryte() const;
     bool get_czy_flaga() const;
     int get_liczba_sasiadow() const;
-    //bool get_czy_flaga() const;
-
-
+    
     void set_czy_mina(bool mina);
     void set_odkryte(bool odkrycie);
     void set_flaga(bool flaga);
     void set_liczba_sasiadow(int licznik);
+    
+    bool operator==(const Pole& inne) const;
 };
 
 #endif

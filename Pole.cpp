@@ -17,4 +17,6 @@ void Pole::set_czy_mina(bool mina) { czy_mina = mina; }
 void Pole::set_odkryte(bool odkrycie) { czy_odkryte = odkrycie; }
 void Pole::set_flaga(bool flaga) { czy_flaga = flaga; }
 void Pole::set_liczba_sasiadow(int licznik) { liczba_sasiadow = licznik; }
-
+bool Pole::operator==(const Pole& inne) const { 
+    return(this->czy_mina == inne.czy_mina && this->czy_odkryte == inne.czy_odkryte);
+}
