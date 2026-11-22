@@ -35,11 +35,11 @@ void Plansza::losuj_miny() {
 void Plansza::oblicz_sasiadow() {
     for (int y = 0; y < wysokosc; ++y) {
         for (int x = 0; x < szerokosc; ++x) {
-            // Jeśli to pole samo jest miną, pomijamy
+            // pomin jesli mina
             if (siatka[y][x].get_czy_mina()) continue;
             
             int liczniki = 0;
-            // Sprawdzamy sąsiadów w promieniu 1 pola (pętla 3x3)
+            // sprawdza sasiadow
             for (int dy = -1; dy <= 1; ++dy) {
                 for (int dx = -1; dx <= 1; ++dx) {
                     int ny = y + dy;
@@ -59,7 +59,7 @@ void Plansza::oblicz_sasiadow() {
 }
 
 
-void Plansza::wyswietl() const {
+void Plansza::wyswietl() const { //"." dla zakrytych, 'F' dla oznaczonych flag
     cout << "\n    ";
     for (int x = 0; x < szerokosc; ++x) {
         cout << x << " ";
@@ -74,9 +74,12 @@ void Plansza::wyswietl() const {
             //
             if (siatka[y][x].get_czy_odkryte()) {
                 cout << siatka[y][x].get_liczba_sasiadow() << " ";
+            } else if (siatka[y][x].get_czy_flaga()) {
+                cout << "F ";
             } else {
                 cout << ". ";
             }
+            
 
         }
         cout << "|\n";
@@ -104,4 +107,64 @@ void Plansza::wyswietl_debug() const {
         cout << "|\n";
     }
     cout << "   -----------\n";
+}
+
+void Plansza::oznacz_pole(int x, int y) {
+    
+    if(x < 0 || x >= szerokosc || y < 0 || y >= wysokosc) {
+        cout << "Niepoprawne wspolrzedne\n";
+        return ;
+    }
+
+    if(siatka[y][x].get_czy_odkryte()) {
+        cout << "Nie mozna oznaczyc juz odkrytego pola\n";
+        return ;
+    }
+
+    bool obecny_stan = siatka[y][x].get_czy_flaga();
+    siatka[y][x].set_flaga(!obecny_stan);
+}
+
+bool Plansza::odkryj_pole(int x, int y) {
+
+    if (x < 0 || x >= szerokosc || y < 0 || y >= wysokosc) {
+        //cout << "Niepoprawne wspolrzedne\n";
+        return true;
+    }
+
+    if (siatka[y][x].get_czy_odkryte() || siatka[y][x].get_czy_flaga()) {
+        //cout << "To pole jest już odkryte\n";
+        return true;
+    }
+
+
+    siatka[y][x].set_odkryte(true);
+    
+    // odkryta mina = przegrana
+    if (siatka[y][x].get_czy_mina()) {
+        return false; 
+    }
+
+    //jesli odkryte 0, to odkrywa sasiadow
+    if(siatka[y][x].get_liczba_sasiadow() == 0) {
+        for(int dy = -1; dy <= 1; ++dy) {
+            for(int dx = -1; dx <= 1; ++dx) {
+                if(dy != 0 || dx != dy) {
+                    odkryj_pole(x + dx, y + dy);
+                }
+            }
+        }
+    }
+    
+    return true;
+}
+bool Plansza::czy_wygrana() const {
+    for(int y = 0; y < wysokosc; ++y) {
+        for(int x = 0; x < szerokosc; ++x) {
+            if(!siatka[y][x].get_czy_mina() && !siatka[y][x].get_czy_odkryte()) {
+                return false;
+            }
+        }
+    }
+    return true;
 }

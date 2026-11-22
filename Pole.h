@@ -3,10 +3,10 @@
 
 class Pole {
 private:
-    bool czy_mina;
-    bool czy_odkryte;
-    bool czy_flaga;
-    int liczba_sasiadow;
+    bool czy_mina = false;
+    bool czy_odkryte = false;
+    bool czy_flaga = false;
+    int liczba_sasiadow = 0;
 
 public:
     Pole();
@@ -15,6 +15,7 @@ public:
     bool get_czy_odkryte() const;
     bool get_czy_flaga() const;
     int get_liczba_sasiadow() const;
+    //bool get_czy_flaga() const;
 
 
     void set_czy_mina(bool mina);
