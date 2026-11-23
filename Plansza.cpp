@@ -65,7 +65,7 @@ ostream& operator<<(ostream& os, const Plansza& plansza) { //"." dla zakrytych, 
         os << x << " ";
     }
 
-    os << "\n    ";
+    os << "\n   ";
     for(int x = 0; x < plansza.get_szerokosc(); ++x) {
         os << "--";
     }
@@ -96,14 +96,20 @@ ostream& operator<<(ostream& os, const Plansza& plansza) { //"." dla zakrytych, 
                 }
             }
         }
-        os << "|\n";
+        os << "| " << y << "\n";
     }
     
     os << "   ";
     for(int x = 0; x < plansza.get_szerokosc(); ++x) {
         os << "--";
     }
-    os << "-\n";
+    os << "-\n   ";
+
+    for(int x = 0; x < plansza.get_szerokosc(); ++x) {
+        os << x << " ";
+    }
+    os << "\n"; 
+
     return os;
     //os << "   -----------\n";
 }
@@ -111,7 +117,6 @@ ostream& operator<<(ostream& os, const Plansza& plansza) { //"." dla zakrytych, 
 void Plansza::wyswietl() const {
     cout << *this;
 }
-
 
 // debugowanie - pokazuje miny '*' i cyfry od razu
 void Plansza::wyswietl_debug() const {
@@ -189,6 +194,18 @@ bool Plansza::odkryj_pole(int x, int y) {
     }
     
     return true;
+}
+
+int Plansza::get_liczba_postawionych_flag() const {
+    int flagi = 0;
+    for (int y = 0; y < wysokosc; ++y) {
+        for(int x = 0; x < szerokosc; ++x) {
+            if (siatka[y][x].get_czy_flaga()) {
+                flagi++;
+            }
+        }
+    }
+    return flagi;
 }
 
 bool Plansza::czy_wygrana() const {

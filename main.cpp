@@ -4,10 +4,26 @@
 using namespace std;
 
 int main() {
-    cout << "Testowa plansza Sapera:\n";
+    // cout << "Testowa plansza Sapera:\n";
     
+    //wybor poziomu trudnosci
+    int wybor;
+    cout << "Wybierz poziom trudnosci:\n";
+    cout << "1. Latwy (5x5, 3 miny)\n";
+    cout << "2. Sredni (8x8, 10 min)\n";
+    cout << "3. Trudny (10x10, 20 min)\n";
+    cin >> wybor;
+
     //tworzenie planszy
-    Plansza p(5, 5, 3);
+    int szer = 5, wys = 5, miny = 3;
+    if (wybor == 2) {
+        szer = 8; wys = 8; miny = 10; 
+    } else if (wybor == 3) {
+        szer = 10; wys = 10; miny = 20;
+    }
+    
+    
+    Plansza p(szer, wys, miny);
     bool gra_trwa = true;
     int akcja, x, y;
     Czas_gry czas;
@@ -24,8 +40,11 @@ int main() {
     while(gra_trwa) {
         
         czas.wyswietl();
-        cout << p;
-        //p.wyswietl();
+
+        int pozostale_miny = p.get_liczba_min() - p.get_liczba_postawionych_flag();
+        cout << "Pozostale miny: " << pozostale_miny << " / " << p.get_liczba_min() << "\n";
+
+        cout << p; //p.wyswietl();
 
         if(p.czy_wygrana()) {
             cout << "\nGRATULACJE, wygrales!\n";
@@ -41,7 +60,7 @@ int main() {
         cin >> akcja;
 
         if (akcja == 3) {
-            cout << "\n Poddales sie. Odkryta plansza: ";
+            cout << "\n Poddales sie. Odkryta plansza: \n";
             czas.wyswietl();
             p.wyswietl_debug();
             break;

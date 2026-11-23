@@ -35,6 +35,8 @@ public:
     int get_szerokosc() const { return szerokosc; }
     int get_wysokosc() const { return wysokosc; }
 
+    int get_liczba_min() const { return liczba_min; }
+    int get_liczba_postawionych_flag() const;
 
     friend ostream& operator<<(ostream& os, const Plansza& plansza);
 };
