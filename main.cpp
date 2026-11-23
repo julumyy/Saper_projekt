@@ -10,6 +10,7 @@ int main() {
     Plansza p(5, 5, 3);
     bool gra_trwa = true;
     int akcja, x, y;
+    Czas_gry czas;
 
     // Pole pole1;
     // Pole pole2;
@@ -21,11 +22,14 @@ int main() {
     cout << "=== SAPER ===\n";
 
     while(gra_trwa) {
+        
+        czas.wyswietl();
         cout << p;
         //p.wyswietl();
 
         if(p.czy_wygrana()) {
             cout << "\nGRATULACJE, wygrales!\n";
+            czas.wyswietl();
             p.wyswietl_debug();
             break;
         }
@@ -38,6 +42,7 @@ int main() {
 
         if (akcja == 3) {
             cout << "\n Poddales sie. Odkryta plansza: ";
+            czas.wyswietl();
             p.wyswietl_debug();
             break;
         }
@@ -51,6 +56,7 @@ int main() {
                 gra_trwa = p.odkryj_pole(x, y);
                 if(!gra_trwa) {
                     cout <<"\n Trafiles na mine. Koniec gry.\n";
+                    czas.wyswietl();
                     p.wyswietl_debug();
                 }
             } else if (akcja == 2) {

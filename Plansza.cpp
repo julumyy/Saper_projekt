@@ -79,7 +79,7 @@ ostream& operator<<(ostream& os, const Plansza& plansza) { //"." dla zakrytych, 
         for (int x = 0; x < plansza.get_szerokosc(); ++x) {
             //
             if (!plansza.siatka[y][x].get_czy_odkryte()) {
-                if (plansza.siatka[y][x].get_czy_odkryte()) {
+                if (plansza.siatka[y][x].get_czy_flaga()) {
                     os << "F ";
                 } else {
                     os << ". ";
@@ -107,6 +107,11 @@ ostream& operator<<(ostream& os, const Plansza& plansza) { //"." dla zakrytych, 
     return os;
     //os << "   -----------\n";
 }
+
+void Plansza::wyswietl() const {
+    cout << *this;
+}
+
 
 // debugowanie - pokazuje miny '*' i cyfry od razu
 void Plansza::wyswietl_debug() const {
