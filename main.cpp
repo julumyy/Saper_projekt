@@ -28,12 +28,6 @@ int main() {
     int akcja, x, y;
     Czas_gry czas;
 
-    // Pole pole1;
-    // Pole pole2;
-
-    // if(pole1 == pole2) {
-    //     cout << "test operatora ==; pola sa identyczne!\n";
-    // }
 
     cout << "=== SAPER ===\n";
 
@@ -57,6 +51,7 @@ int main() {
         cout << "1. Odkryj pole\n";
         cout << "2. Postaw/usun flage (F)\n";
         cout << "3. Poddaj sie\n";
+        cout << "4. Podpowiedz - sprawdz liczbe min wokol pola (x, y)\n";
         cin >> akcja;
 
         if (akcja == 3) {
@@ -64,6 +59,23 @@ int main() {
             czas.wyswietl();
             p.wyswietl_debug();
             break;
+        } else if (akcja == 4) {
+            cout << "Podaj wspolrzedne x i y do sprawdzenia: ";
+            cin >> x >> y;
+            try {
+                // operator []
+                int sasiadom = p[y][x].get_liczba_sasiadow();
+                bool czy_mina = p[y][x].get_czy_mina();
+        
+                cout << "\n[PODPOWIEDZ] Pole (" << x << ", " << y << "): ";
+                if (czy_mina) {
+                    cout << "To pole ukrywa MINE! (Uwaga!)\n";
+                } else {
+                    cout << "Liczba min w sasiedztwie: " << sasiadom << "\n";
+                }
+            } catch (...) {
+                cout << "Blad: Podano wspolrzedne poza zakresem planszy!\n";
+            }
         }
 
 
@@ -72,6 +84,9 @@ int main() {
     
         try {
             if(akcja == 1) {
+                cout << "Podaj wspolrzedne (x y): ";
+                cin >> x >> y;
+
                 gra_trwa = p.odkryj_pole(x, y);
                 if(!gra_trwa) {
                     cout <<"\n Trafiles na mine. Koniec gry.\n";
@@ -82,9 +97,6 @@ int main() {
                 p.oznacz_pole(x, y);
             }
             
-            //else {
-            //    cout << "Niepoprawna akcja";
-            //}
         }
         catch (const out_of_range& e) {
             cout << "Blad wyjatku: " << e.what() << "\n";

@@ -9,6 +9,7 @@ Plansza::Plansza(int szer, int wys, int miny) {
     szerokosc = szer;
     wysokosc = wys;
     liczba_min = miny;
+    czy_pierwszy_ruch = true;
 
     siatka.resize(wysokosc, vector<Pole>(szerokosc));
 
@@ -58,7 +59,7 @@ void Plansza::oblicz_sasiadow() {
     }
 }
 
-
+//wyswietlanie
 ostream& operator<<(ostream& os, const Plansza& plansza) { //"." dla zakrytych, 'F' dla oznaczonych flag
     os << "\n    ";
     for (int x = 0; x < plansza.get_szerokosc(); ++x) {
@@ -124,7 +125,12 @@ void Plansza::wyswietl_debug() const {
     for (int x = 0; x < szerokosc; ++x) {
         cout << x << " ";
     }
-    cout << "\n   -----------\n";
+    cout << "\n   ";
+
+    for (int x = 0; x < szerokosc; ++x) {
+        cout << "--";
+    }
+    cout << "-\n";
 
     for (int y = 0; y < wysokosc; ++y) {
         cout << y << " | ";
@@ -137,7 +143,31 @@ void Plansza::wyswietl_debug() const {
         }
         cout << "|\n";
     }
-    cout << "   -----------\n";
+    cout << "   ";
+    for (int x = 0; x < szerokosc; ++x) {
+        cout << "--";
+    }
+    cout << "-\n";
+
+}
+
+void Plansza::losuj_miny_z_wyjatkiem(int bezpieczny_x, int bezpieczny_y) {
+    int postawione_miny = 0;
+    while (postawione_miny < liczba_min) {
+        int rx = rand() % szerokosc;
+        int ry = rand() % wysokosc;
+
+        // Warunek: nie stawiaj miny na pierwszym klikniętym polu gracza!
+        if (abs(rx - bezpieczny_x) <= 1 && abs(ry - bezpieczny_y) <= 1) {
+            continue; 
+        }
+
+        // Jeśli pole nie ma jeszcze miny, postaw ją
+        if (!siatka[ry][rx].get_czy_mina()) {
+            siatka[ry][rx].set_czy_mina(true);
+            postawione_miny++;
+        }
+    }
 }
 
 void Plansza::oznacz_pole(int x, int y) {
@@ -163,6 +193,12 @@ bool Plansza::odkryj_pole(int x, int y) {
 
     if (x < 0 || x >= szerokosc || y < 0 || y >= wysokosc) {
         throw out_of_range("Niepoprawne wspolrzedne");
+    }
+
+    if (czy_pierwszy_ruch) { //sprawdzanie czy pierwszy ruch
+        losuj_miny_z_wyjatkiem(x, y); 
+        oblicz_sasiadow();           
+        czy_pierwszy_ruch = false;   
     }
 
     if (siatka[y][x].get_czy_odkryte() || siatka[y][x].get_czy_flaga()) {
@@ -217,4 +253,13 @@ bool Plansza::czy_wygrana() const {
         }
     }
     return true;
+}
+
+
+vector<Pole>& Plansza::operator[](int y) {
+    return siatka[y];
+}
+
+const vector<Pole>& Plansza::operator[] (int y) const {
+    return siatka[y];
 }

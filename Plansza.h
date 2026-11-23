@@ -20,6 +20,7 @@ class Plansza : public Element_gry {
 private:
     int wysokosc, szerokosc;
     int liczba_min;
+    bool czy_pierwszy_ruch = true;
     vector<vector<Pole>> siatka;
 
 public:
@@ -38,7 +39,12 @@ public:
     int get_liczba_min() const { return liczba_min; }
     int get_liczba_postawionych_flag() const;
 
+    void losuj_miny_z_wyjatkiem(int bezpieczny_x, int bezpieczny_y);
+
     friend ostream& operator<<(ostream& os, const Plansza& plansza);
+
+    vector<Pole>& operator[](int y);
+    const vector<Pole>& operator[](int y) const;
 };
 
 class Czas_gry : public Element_gry {
